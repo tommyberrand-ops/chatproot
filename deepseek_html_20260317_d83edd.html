@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 ANIMAL PROMPT DANCE STUDIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2c3e50, #1e2a3a);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 2px solid #ffaa00;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+        }
+        
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #ffaa00;
+            color: #ffaa00;
+        }
+        
+        .badge {
+            background: #ffaa00;
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .animal-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+        
+        .animal-card:hover {
+            background: rgba(255, 170, 0, 0.2);
+            border-color: #ffaa00;
+        }
+        
+        .animal-card.selected {
+            background: #ffaa00;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .selected-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .selected-info span {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ffaa00;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: rgba(255, 170, 0, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 3em;
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+        
+        .image-preview {
+            position: relative;
+            margin-top: 15px;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #ffaa00;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .country-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+        
+        .country-card:hover {
+            background: rgba(255, 170, 0, 0.2);
+            border-color: #ffaa00;
+        }
+        
+        .country-card.selected {
+            background: #ffaa00;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .color-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .color-item {
+            flex: 1;
+        }
+        
+        .color-item input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            background: #ffaa00;
+            color: #000;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px #ffaa00;
+        }
+        
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #ffaa00;
+        }
+        
+        .outfit-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            color: #fff;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            color: #fff;
+            resize: vertical;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background: #ffaa00;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .number-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .number-item {
+            flex: 1;
+        }
+        
+        .number-item input {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            color: #fff;
+        }
+        
+        .info-note {
+            background: rgba(255, 170, 0, 0.1);
+            border-left: 4px solid #ffaa00;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .generate-btn {
+            background: #ffaa00;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px #ffaa00;
+        }
+        
+        .right-col {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #ffaa00;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ffaa00;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffaa00;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .prompt-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .tab-btn.active {
+            background: #ffaa00;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .prompt-display {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            border: 1px solid #ffaa00;
+        }
+        
+        .recap, .tips {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .recap h4, .tips h4 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-paw"></i> ANIMAL PROMPT DANCE STUDIO</h1>
+            <div class="version">v1.0 - CHIENS & CHATS - Visage animal conservé</div>
+        </header>
+
+        <div class="main-content">
+            <!-- COLONNE GAUCHE -->
+            <div class="left-col">
+                <!-- SECTION ANIMAL -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-dog"></i>
+                        <h3>ANIMAL</h3>
+                        <span class="badge">2</span>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" id="animalSearch" placeholder="Rechercher..." class="search-input">
+                        <div class="animals-grid" id="animalGrid">
+                            <div class="animal-card selected" data-animal="cat">🐱 CHAT</div>
+                            <div class="animal-card" data-animal="dog">🐶 CHIEN</div>
+                        </div>
+                        <div class="selected-info" id="selectedAnimal">
+                            Animal: <span>CHAT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION UPLOAD -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-camera"></i>
+                        <h3>IMAGE DE RÉFÉRENCE</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez ou glissez la photo de votre animal</p>
+                            <input type="file" id="imageInput" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="imagePreview" style="display: none;">
+                            <img id="previewImg" src="#" alt="Aperçu">
+                            <button class="remove-btn" id="removeImage"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION PAYS -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-globe"></i>
+                        <h3>STYLE DE DANSE</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="countries-grid" id="countryGrid">
+                            <div class="country-card selected" data-country="spain">🇪🇸 Espagne</div>
+                            <div class="country-card" data-country="japan">🇯🇵 Japon</div>
+                            <div class="country-card" data-country="brazil">🇧🇷 Brésil</div>
+                            <div class="country-card" data-country="india">🇮🇳 Inde</div>
+                            <div class="country-card" data-country="mexico">🇲🇽 Mexique</div>
+                            <div class="country-card" data-country="turkey">🇹🇷 Turquie</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION COULEURS ACCESSOIRES -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-palette"></i>
+                        <h3>COULEURS ACCESSOIRES</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="color-row">
+                            <div class="color-item">
+                                <label>COLLIER</label>
+                                <input type="color" id="collarColor" value="#ff0000">
+                            </div>
+                            <div class="color-item">
+                                <label>NOEUD</label>
+                                <input type="color" id="bowColor" value="#0000ff">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION TENUE DE DÉPART -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-tshirt"></i>
+                        <h3>TENUE DE DÉPART</h3>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" id="startingTop" placeholder="Haut" value="collier simple" class="outfit-input">
+                        <input type="text" id="startingBottom" placeholder="Bas" value="sans" class="outfit-input">
+                        <input type="text" id="startingDetails" placeholder="Détails" value="poils naturels" class="outfit-input">
+                    </div>
+                </div>
+
+                <!-- SECTION TENUE FINALE -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-crown"></i>
+                        <h3>TENUE FINALE</h3>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="finalOutfitDescription" rows="4" placeholder="Description de la tenue finale..."></textarea>
+                        <button class="btn secondary" id="generateOutfit">
+                            <i class="fas fa-wand-magic"></i> Générer tenue
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION GESTES ANIMAUX -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>GESTES ANIMAUX</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label"><input type="checkbox" id="gesteOreilles" checked> 🐾 Remue oreilles</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteQueue" checked> 🐕 Remue queue</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gestePattes" checked> 🐾 Lève pattes</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteTet" checked> 🐱 Penche tête</label>
+                        </div>
+                        
+                        <div class="number-group">
+                            <div class="number-item">
+                                <label>Nombre de sauts</label>
+                                <input type="number" id="sautsCount" value="2" min="1" max="5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION EFFETS -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>EFFETS</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label"><input type="checkbox" id="effectConfettis" checked> 🎉 Confettis</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectPaillettes" checked> ✨ Paillettes</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectPapillons"> 🦋 Papillons</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOUTON GÉNÉRER -->
+                <button class="generate-btn" id="generatePrompt">
+                    <i class="fas fa-bolt"></i> GÉNÉRER LE PROMPT
+                </button>
+            </div>
+
+            <!-- COLONNE DROITE -->
+            <div class="right-col">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3><i class="fas fa-terminal"></i> PROMPT GÉNÉRÉ</h3>
+                        <div class="result-actions">
+                            <button class="icon-btn" id="copyPrompt"><i class="fas fa-copy"></i></button>
+                            <button class="icon-btn" id="exportPrompt"><i class="fas fa-download"></i></button>
+                            <button class="icon-btn" id="translatePrompt" title="Traduire"><i class="fas fa-language"></i></button>
+                            <button class="icon-btn" id="clearPrompt"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="prompt-tabs">
+                        <button class="tab-btn active" id="tabFull">Complet</button>
+                        <button class="tab-btn" id="tabPart1">Partie 1</button>
+                        <button class="tab-btn" id="tabPart2">Partie 2</button>
+                        <button class="tab-btn" id="tabConsignes">Consignes</button>
+                    </div>
+                    
+                    <div class="prompt-display" id="promptDisplay"></div>
+                    
+                    <div class="recap">
+                        <h4>RÉCAPITULATIF</h4>
+                        <div id="recapContent"></div>
+                    </div>
+                    
+                    <div class="tips">
+                        <h4>CONSEILS</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Le visage de l'animal reste IDENTIQUE</li>
+                            <li><i class="fas fa-check-circle"></i> Le corps de l'animal est CONSERVÉ</li>
+                            <li><i class="fas fa-check-circle"></i> Seule la tenue et les accessoires changent</li>
+                            <li><i class="fas fa-check-circle"></i> Les pattes qui cachent sont NATURELLES (pas de peinture)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 - ANIMAL PROMPT DANCE STUDIO - Visage animal conservé</p>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== DONNÉES ====================
+        const countries = {
+            spain: { name: "🇪🇸 Espagne", dance: "Flamenco" },
+            japan: { name: "🇯🇵 Japon", dance: "Geisha" },
+            brazil: { name: "🇧🇷 Brésil", dance: "Samba" },
+            india: { name: "🇮🇳 Inde", dance: "Bollywood" },
+            mexico: { name: "🇲🇽 Mexique", dance: "Jarabe" },
+            turkey: { name: "🇹🇷 Turquie", dance: "Danse Orientale" }
+        };
+
+        const animalData = {
+            cat: { 
+                name: "🐱 CHAT", 
+                traits: "oreilles pointues, moustaches, regard félin, museau de chat",
+                sounds: "miaulements",
+                moves: "marche féline, étirements, sauts gracieux"
+            },
+            dog: { 
+                name: "🐶 CHIEN", 
+                traits: "oreilles tombantes, truffe noire, langue pendante, regard fidèle",
+                sounds: "aboiements joyeux",
+                moves: "remue queue frénétiquement, sautille, penche la tête"
+            }
+        };
+
+        const finalOutfits = {
+            spain: [
+                "petite veste de flamenco rouge avec volants, chapeau cordouan miniature",
+                "cape de toréador dorée, petit chapeau plat, nœud rouge autour du cou"
+            ],
+            japan: [
+                "kimono miniature en soie avec obi, petite ombrelle attachée au dos",
+                "tenue de geisha avec fleurs dans les poils, petit éventail"
+            ],
+            brazil: [
+                "costume de carnaval avec mini-plumes, collier de fleurs",
+                "tenue de samba avec paillettes, petit chapeau de carnaval"
+            ],
+            india: [
+                "parure de Bollywood avec bijoux dorés, voile léger",
+                "tenue de danse indienne avec grelots aux pattes"
+            ],
+            mexico: [
+                "petit sombrero, poncho coloré, maracas miniatures",
+                "tenue de fête mexicaine avec fleurs et rubans"
+            ],
+            turkey: [
+                "voile turquoise avec pièces dorées, bracelets de cheville",
+                "tenue de danse orientale avec ceinture à sequins"
+            ]
+        };
+
+        // ==================== CLASSE PRINCIPALE ====================
+        class AnimalPromptGenerator {
+            constructor() {
+                this.userData = {};
+            }
+
+            collectUserData() {
+                const selectedAnimal = document.querySelector('.animal-card.selected');
+                const selectedCountry = document.querySelector('.country-card.selected');
+                
+                this.userData = {
+                    animal: selectedAnimal ? selectedAnimal.dataset.animal : 'cat',
+                    animalName: selectedAnimal ? selectedAnimal.textContent : '🐱 CHAT',
+                    country: selectedCountry ? selectedCountry.dataset.country : 'spain',
+                    countryName: selectedCountry ? selectedCountry.textContent : '🇪🇸 Espagne',
+                    collarColor: document.getElementById('collarColor').value,
+                    bowColor: document.getElementById('bowColor').value,
+                    startingOutfit: {
+                        top: document.getElementById('startingTop').value,
+                        bottom: document.getElementById('startingBottom').value,
+                        details: document.getElementById('startingDetails').value
+                    },
+                    finalOutfit: document.getElementById('finalOutfitDescription').value,
+                    gestures: {
+                        oreilles: document.getElementById('gesteOreilles')?.checked || false,
+                        queue: document.getElementById('gesteQueue')?.checked || false,
+                        pattes: document.getElementById('gestePattes')?.checked || false,
+                        tet: document.getElementById('gesteTet')?.checked || false
+                    },
+                    sautsCount: document.getElementById('sautsCount')?.value || 2,
+                    effects: {
+                        confettis: document.getElementById('effectConfettis')?.checked || false,
+                        paillettes: document.getElementById('effectPaillettes')?.checked || false,
+                        papillons: document.getElementById('effectPapillons')?.checked || false
+                    }
+                };
+            }
+
+            generatePart1() {
+                const animal = animalData[this.userData.animal];
+                const country = countries[this.userData.country];
+                
+                let gesturesText = '';
+                if (this.userData.gestures.oreilles) gesturesText += '- Elle REMUE SES OREILLES avec curiosité\n';
+                if (this.userData.gestures.queue) gesturesText += '- Sa QUEUE BOUGE joyeusement en rythme\n';
+                if (this.userData.gestures.pattes) gesturesText += '- Elle LÈVE LES PATTES gracieusement\n';
+                if (this.userData.gestures.tet) gesturesText += '- Elle PENCHE LA TÊTE avec un air attendrissant\n';
+
+                return `🎬 SÉQUENCE ANIMALE - PREMIÈRE PARTIE de 6 secondes
+Basée sur l'image fournie
+
+📌 CONSIGNE ABSOLUE - RESPECT STRICT DE L'IMAGE :
+- Le VISAGE de l'animal est STRICTEMENT IDENTIQUE à l'image de référence
+- Le CORPS de l'animal est STRICTEMENT IDENTIQUE à l'image de référence
+- Les POILS, FOURRURE sont exactement les mêmes
+- Seuls les MOUVEMENTS et les ACCESSOIRES sont ajoutés
+- LA TÊTE DE L'ANIMAL NE CHANGE PAS - elle reste parfaitement reconnaissable
+
+LE SUJET :
+- ${animal.name} magnifique, avec ses ${animal.traits}
+- ${animal.sounds} - elle communique en remuant la queue
+- Visage STRICTEMENT IDENTIQUE à l'image
+
+TENUE DE DÉPART (SERA COMPLÈTEMENT REMPLACÉE) :
+- Collier/accessoire : ${this.userData.startingOutfit.top}
+- Bas : ${this.userData.startingOutfit.bottom}
+- Détails : ${this.userData.startingOutfit.details}
+- Couleur collier : ${this.getColorName(this.userData.collarColor)}
+- Couleur nœud : ${this.getColorName(this.userData.bowColor)}
+
+DANSE AVANT TRANSFORMATION :
+L'animal exécute une danse ${country.dance} adaptée à sa morphologie :
+    - ${animal.moves}
+    - Pas de danse adaptés à ses pattes
+    - Mouvements synchronisés avec la musique imaginaire
+
+GESTES ANIMAUX :
+${gesturesText}
+- Elle tourne sur elle-même ${this.userData.sautsCount} fois
+
+TRANSITION NATURELLE :
+Au moment le plus intense de sa danse, elle rapproche SES PATTES AVANT de l'objectif dans un geste théâtral, les plaquant contre la caméra pour masquer entièrement l'image, cachant complètement la vue pendant la fin de cette première partie. Elle laisse deviner un regard attendrissant juste avant que ses pattes ne couvrent l'objectif.
+
+⚠️ LES PATTES SANS COULEUR - PAS DE PEINTURE :
+- Les pattes qui cachent l'écran sont NATURELLES (pas de couleur ajoutée)
+- Elles ont la même couleur que la fourrure de l'animal
+- Aucune peinture, aucun colorant - juste ses pattes normales
+
+IMPORTANT - PRÉPARATION POUR LA PARTIE 2 :
+- Pendant que les pattes cachent l'objectif, elle aura le temps de SE CHANGER COMPLÈTEMENT
+- La transformation (nouvelle tenue) aura lieu HORS CAMÉRA
+- La PARTIE 2 commencera avec le résultat FINAL déjà visible`;
+            }
+
+            generatePart2() {
+                const animal = animalData[this.userData.animal];
+                const country = countries[this.userData.country];
+                
+                let gesturesText = '';
+                if (this.userData.gestures.oreilles) gesturesText += '- Oreilles qui bougent encore plus expressivement\n';
+                if (this.userData.gestures.queue) gesturesText += '- Queue qui remue frénétiquement de joie\n';
+                if (this.userData.gestures.pattes) gesturesText += '- Pattes qui dansent avec grâce\n';
+                if (this.userData.gestures.tet) gesturesText += '- Tête qui penche avec des regards attendrissants\n';
+
+                let effectsText = [];
+                if (this.userData.effects.confettis) effectsText.push('confettis colorés');
+                if (this.userData.effects.paillettes) effectsText.push('paillettes scintillantes');
+                if (this.userData.effects.papillons) effectsText.push('papillons qui virevoltent');
+
+                return `🎬 SÉQUENCE ANIMALE - DEUXIÈME PARTIE de 6 secondes
+
+📌 POINT DE DÉPART : Les pattes NATURELLES se retirent, révélant l'animal dans sa nouvelle tenue
+📌 VISAGE STRICTEMENT IDENTIQUE à l'image - AUCUN CHANGEMENT
+📌 CORPS STRICTEMENT IDENTIQUE à l'image - seule la tenue change
+
+CONTINUITÉ PARFAITE DU VISAGE - ABSOLUMENT CRUCIAL :
+- Le VISAGE de l'animal est STRICTEMENT IDENTIQUE à celui de la PARTIE 1
+- Les YEUX, le NEZ, la BOUCHE, les MOUSTACHES sont parfaitement reconnaissables
+- La FOURRURE est exactement la même
+- RECONNAISSABLE AU PREMIER COUP D'ŒIL
+
+⚠️ TRANSITION NATURELLE :
+- Pendant que les pattes cachaient l'objectif, elle a eu le temps de SE CHANGER
+- La nouvelle tenue est DÉJÀ PORTÉE au début de cette partie
+- Les pattes sont NATURELLES - pas de peinture, pas de couleur ajoutée
+
+NOUVELLE TENUE (DÉJÀ PORTÉE) :
+L'animal porte maintenant une tenue spectaculaire :
+${this.userData.finalOutfit}
+
+GESTES ANIMAUX ACCRUS :
+${gesturesText}
+- Elle sautille ${this.userData.sautsCount} fois de joie
+- Elle se dresse sur ses pattes arrière
+
+${effectsText.length > 0 ? `EFFETS SPECTACULAIRES :\n- ${effectsText.join('\n- ')}` : ''}
+
+FINALE :
+L'image se fige sur un dernier geste attendrissant, puis fondu au noir.`;
+            }
+
+            generateConsignes() {
+                const animal = animalData[this.userData.animal];
+                const country = countries[this.userData.country];
+                
+                return `CONSIGNES DE COHÉRENCE ABSOLUE :
+
+1. VISAGE IDENTIQUE : Le visage de l'animal est STRICTEMENT IDENTIQUE à l'image - AUCUNE ERREUR POSSIBLE
+2. CORPS IDENTIQUE : Le corps, la fourrure, les proportions sont exactement les mêmes
+3. TRANSITION NATURELLE : Le changement de tenue a eu lieu HORS CAMÉRA pendant que les PATTES NATURELLES cachaient l'objectif
+4. RENDU ULTRA-RÉALISTE : Fourrure texturée, poils individuels, reflets dans les yeux
+5. ANIMAL : ${animal.name} - ${animal.traits}
+6. DANSE : ${country.name} - ${country.dance}
+7. GESTES ANIMAUX : ${this.userData.gestures.oreilles ? 'Oreilles ✓' : ''} ${this.userData.gestures.queue ? 'Queue ✓' : ''} ${this.userData.gestures.pattes ? 'Pattes ✓' : ''} ${this.userData.gestures.tet ? 'Tête ✓' : ''}
+8. SAUTS : ${this.userData.sautsCount} fois
+9. COULEURS : Collier ${this.getColorName(this.userData.collarColor)}, Nœud ${this.getColorName(this.userData.bowColor)}`;
+            }
+
+            getColorName(hex) {
+                const colors = {
+                    '#ff0000': 'rouge', '#ff4500': 'orange', '#ff00ff': 'rose',
+                    '#00ff00': 'vert', '#0000ff': 'bleu', '#ffff00': 'jaune',
+                    '#ffd700': 'or', '#c0c0c0': 'argent', '#000000': 'noir', '#ffffff': 'blanc'
+                };
+                return colors[hex.toLowerCase()] || 'personnalisée';
+            }
+
+            generateFullPrompt() {
+                this.collectUserData();
+                
+                let part1 = this.generatePart1();
+                let part2 = this.generatePart2();
+                let consignes = this.generateConsignes();
+                
+                return {
+                    part1: part1,
+                    part2: part2,
+                    consignes: consignes,
+                    full: part1 + '\n\n' + part2 + '\n\n' + consignes
+                };
+            }
+        }
+
+        // ==================== INITIALISATION ====================
+        const generator = new AnimalPromptGenerator();
+
+        // Sélection animal
+        document.querySelectorAll('.animal-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.querySelector('#selectedAnimal span').textContent = this.textContent;
+                updateRecap();
+            });
+        });
+
+        // Sélection pays
+        document.querySelectorAll('.country-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Upload image
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const removeBtn = document.getElementById('removeImage');
+
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) handleImage(file);
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) handleImage(e.target.files[0]);
+        });
+
+        removeBtn.addEventListener('click', () => {
+            imagePreview.style.display = 'none';
+            uploadArea.style.display = 'flex';
+            imageInput.value = '';
+        });
+
+        function handleImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Générer tenue aléatoire
+        document.getElementById('generateOutfit').addEventListener('click', function() {
+            const selectedCountry = document.querySelector('.country-card.selected');
+            if (!selectedCountry) return;
+            
+            const country = selectedCountry.dataset.country;
+            const outfits = finalOutfits[country];
+            const randomOutfit = outfits[Math.floor(Math.random() * outfits.length)];
+            
+            const animal = document.querySelector('.animal-card.selected').textContent;
+            document.getElementById('finalOutfitDescription').value = 
+                `Tenue de ${animal} en ${countries[country].name} : ${randomOutfit}`;
+        });
+
+        // Générer prompt
+        document.getElementById('generatePrompt').addEventListener('click', function() {
+            const prompts = generator.generateFullPrompt();
+            window.lastPrompts = prompts;
+            displayPrompt(prompts, 'tabFull');
+            updateRecap();
+        });
+
+        // Onglets
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const prompts = window.lastPrompts || generator.generateFullPrompt();
+                displayPrompt(prompts, this.id);
+            });
+        });
+
+        function displayPrompt(prompts, tabId) {
+            const display = document.getElementById('promptDisplay');
+            let text = '';
+            switch(tabId) {
+                case 'tabFull': text = prompts.full || ''; break;
+                case 'tabPart1': text = prompts.part1 || ''; break;
+                case 'tabPart2': text = prompts.part2 || ''; break;
+                case 'tabConsignes': text = prompts.consignes || ''; break;
+            }
+            display.innerHTML = text.replace(/\n/g, '<br>');
+        }
+
+        function updateRecap() {
+            const animal = document.querySelector('.animal-card.selected');
+            const country = document.querySelector('.country-card.selected');
+            const recap = `
+🐾 Animal : ${animal ? animal.textContent : '🐱 CHAT'}
+🌍 Danse : ${country ? country.textContent : '🇪🇸 Espagne'}
+🎨 Gestes : Oreilles ✓ Queue ✓ Pattes ✓ Tête ✓
+🎯 Sauts : ${document.getElementById('sautsCount').value}
+            `;
+            document.getElementById('recapContent').innerHTML = recap.replace(/\n/g, '<br>');
+        }
+
+        // Boutons copier, exporter, traduire, effacer
+        document.getElementById('copyPrompt').addEventListener('click', () => {
+            navigator.clipboard.writeText(document.getElementById('promptDisplay').innerText)
+                .then(() => alert('✅ Prompt copié !'));
+        });
+
+        document.getElementById('exportPrompt').addEventListener('click', () => {
+            const text = document.getElementById('promptDisplay').innerText;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'prompt_animal.txt';
+            a.click();
+        });
+
+        document.getElementById('translatePrompt').addEventListener('click', () => {
+            const text = document.getElementById('promptDisplay').innerText;
+            const url = `https://translate.google.com/?sl=fr&tl=en&text=${encodeURIComponent(text)}&op=translate`;
+            window.open(url, '_blank');
+        });
+
+        document.getElementById('clearPrompt').addEventListener('click', () => {
+            document.getElementById('promptDisplay').innerHTML = '';
+            window.lastPrompts = null;
+        });
+
+        // Recherche animal
+        document.getElementById('animalSearch').addEventListener('input', function(e) {
+            const search = e.target.value.toLowerCase();
+            document.querySelectorAll('.animal-card').forEach(card => {
+                card.style.display = card.textContent.toLowerCase().includes(search) ? 'block' : 'none';
+            });
+        });
+
+        // Mise à jour compteur sauts
+        document.getElementById('sautsCount').addEventListener('input', updateRecap);
+
+        // Génération automatique au chargement
+        setTimeout(() => {
+            const prompts = generator.generateFullPrompt();
+            window.lastPrompts = prompts;
+            displayPrompt(prompts, 'tabFull');
+            updateRecap();
+        }, 100);
+    </script>
+</body>
+</html>
